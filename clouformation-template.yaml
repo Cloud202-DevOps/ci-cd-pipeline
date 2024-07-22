@@ -10,6 +10,8 @@ Resources:
       Tags:
         - Key: env
           Value: github-actions
+        - Key: Name
+          Value: github-actions-server
 
   MyIAMUser:
     Type: 'AWS::IAM::User'
@@ -18,3 +20,15 @@ Resources:
       Tags:
         - Key: Name
           Value: my-iam-user
+
+Outputs:
+  EC2InstancePublicIP:
+    Description: "Public IP address of the EC2 instance"
+    Value: !GetAtt 
+      - MyEC2Instance
+      - PublicIp
+  IAMUserARN:
+    Description: "ARN of the IAM user"
+    Value: !GetAtt
+      - MyIAMUser
+      - Arn
