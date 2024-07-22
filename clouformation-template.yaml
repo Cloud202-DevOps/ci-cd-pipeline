@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyVPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: '10.0.0.0/16'
+      Tags:
+        - Key: Name
+          Value: my-vpc
+
+  MySubnet:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: vpc-0dd05da77666bc624
+      CidrBlock: '10.0.1.0/24'
+      AvailabilityZone: eu-west-2a
+      Tags:
+        - Key: Name
+          Value: my-subnet
+
+  MyEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-07d20571c32ba6cdc # Replace with a valid AMI ID for eu-west-2
+      SubnetId: subnet-04999e6284691e96f
+      Tags:
+        - Key: env
+          Value: github-actions
+
+  MyIAMUser:
+    Type: 'AWS::IAM::User'
+    Properties:
+      UserName: my-new-user
+      Tags:
+        - Key: Name
+          Value: my-iam-user
