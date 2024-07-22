@@ -25,7 +25,7 @@ Outputs:
     Description: "Public IP address of the EC2 instance"
     Value: !GetAtt 
       - MyEC2Instance
-      - PublicIp
+      - Public IPv4 address
   IAMUserARN:
     Description: "ARN of the IAM user"
     Value: !GetAtt
