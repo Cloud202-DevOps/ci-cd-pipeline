@@ -30,14 +30,14 @@ jobs:
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
-            --template-file ci-cd-pipeline/clouformation-template.yaml \
-            --stack-name my-stack \
+            --template-file clouformation-template.yaml \
+            --stack-name mylateststack \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
       - name: Get Stack Outputs
         id: get-outputs
         run: |
-          aws cloudformation describe-stacks --stack-name my-stack --query "Stacks[0].Outputs" --output json > outputs.json
+          aws cloudformation describe-stacks --stack-name mylateststack --query "Stacks[0].Outputs" --output json > outputs.json
         continue-on-error: true
 
       - name: Display Outputs
