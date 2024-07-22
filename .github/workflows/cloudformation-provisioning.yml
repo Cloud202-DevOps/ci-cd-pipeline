@@ -13,17 +13,29 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        
-      - name: Setup CloudFormation Linter with Latest Version
-        uses: scottbrenner/cfn-lint-action@v2
+
+      - name: List Files for Debugging
+        run: |
+          echo "Listing files in the root directory:"
+          ls -la
+          echo "Listing files in the .github/workflows directory:"
+          ls -la .github/workflows
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install -g cfn-lint
 
       - name: Print the CloudFormation Linter Version & Run Linter
         run: |
           cfn-lint --version
-          cfn-lint -t .cloudformation-template.yaml 
+          cfn-lint -t clouformation-template.yaml
 
   provision:
-    runs-on: ubuntu-latest # GitHub-hosted runner
+    runs-on: ubuntu-latest
     needs: lint
 
     steps:
@@ -40,12 +52,12 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ${{ secrets.AWS_REGION }}
 
-      - name: List Files
+      - name: List Files for Debugging
         run: ls -la
 
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
-            --template-file cloudformation-template.yaml \
+            --template-file clouformation-template.yaml \
             --stack-name gactionststack \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
