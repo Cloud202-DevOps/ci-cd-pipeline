@@ -46,11 +46,3 @@ jobs:
       - name: Display Outputs
         run: |
           cat outputs.json
-          if [ -s outputs.json ]; then
-            IP=$(jq -r '.[] | select(.OutputKey=="EC2InstancePublicIP") | .OutputValue' outputs.json)
-            ARN=$(jq -r '.[] | select(.OutputKey=="IAMUserARN") | .OutputValue' outputs.json)
-            echo "Public IP: $IP"
-            echo "IAM User ARN: $ARN"
-          else
-            echo "No outputs found in outputs.json"
-          fi
