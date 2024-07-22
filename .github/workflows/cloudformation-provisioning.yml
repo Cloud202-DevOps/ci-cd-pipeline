@@ -9,14 +9,14 @@ on:
 jobs:
   provision:
     runs-on: ubuntu-latest # GitHub-hosted runner
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Set up AWS CLI
         run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+          aws --version # Check AWS CLI version (GitHub-hosted runners should have it installed)
 
       - name: Configure AWS CLI
         run: |
@@ -24,9 +24,26 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region eu-west-2
 
+      - name: List Files
+        run: ls -la
+
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
-            --template-file clouformation-template.yaml \
-            --stack-name mynewstack \
+            --template-file cloudformation-template.yaml \
+            --stack-name my-stack \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+
+      - name: Get Stack Outputs
+        id: get-outputs
+        run: |
+          aws cloudformation describe-stacks --stack-name my-stack --query "Stacks[0].Outputs" --output json > outputs.json
+        continue-on-error: true
+
+      - name: Display Outputs
+        run: |
+          cat outputs.json
+          IP=$(jq -r '.[] | select(.OutputKey=="EC2InstancePublicIP") | .OutputValue' outputs.json)
+          ARN=$(jq -r '.[] | select(.OutputKey=="IAMUserARN") | .OutputValue' outputs.json)
+          echo "Public IP: $IP"
+          echo "IAM User ARN: $ARN"
