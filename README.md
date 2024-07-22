@@ -1,9 +1,4 @@
-Here's a simplified and concise README for the two tasks:
-
----
-
-# README
-
+# CI/CD Pipeline
 ## Task-01: Creating a Continuous Delivery Pipeline with GitHub Actions
 
 ### Description
@@ -65,6 +60,3 @@ Automate the provisioning of AWS resources using CloudFormation and GitHub Actio
 - Use GitHub Actions to deploy AWS resources defined in a CloudFormation template.
 - Automate provisioning and manage infrastructure as code.
 
----
-
-Feel free to adjust or add any specific instructions as needed!
