@@ -31,17 +31,17 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file clouformation-template.yaml \
-            --stack-name gactionststack \
+            --stack-name githubactionststack \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
       - name: Wait for Stack Creation
         run: |
-          aws cloudformation wait stack-create-complete --stack-name gactionststack
+          aws cloudformation wait stack-create-complete --stack-name githubactionststack
 
       - name: Get Stack Outputs
         id: get-outputs
         run: |
-          aws cloudformation describe-stacks --stack-name gactionststack --query "Stacks[0].Outputs" --output json > outputs.json
+          aws cloudformation describe-stacks --stack-name githubactionststack --query "Stacks[0].Outputs" --output json > outputs.json
 
       - name: Display Outputs
         run: |
