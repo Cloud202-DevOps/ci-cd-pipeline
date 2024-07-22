@@ -31,13 +31,13 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file clouformation-template.yaml \
-            --stack-name mylateststack \
+            --stack-name galateststack \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
       - name: Get Stack Outputs
         id: get-outputs
         run: |
-          aws cloudformation describe-stacks --stack-name mylateststack --query "Stacks[0].Outputs" --output json > outputs.json
+          aws cloudformation describe-stacks --stack-name galateststack --query "Stacks[0].Outputs" --output json > outputs.json
         continue-on-error: true
 
       - name: Display Outputs
