@@ -32,7 +32,7 @@ jobs:
       - name: Print the CloudFormation Linter Version & Run Linter
         run: |
           cfn-lint --version
-          cfn-lint -t clouformation-template.yaml
+          cfn-lint validate clouformation-template.yaml
 
   provision:
     runs-on: ubuntu-latest
