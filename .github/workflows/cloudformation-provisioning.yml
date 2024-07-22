@@ -20,7 +20,7 @@ jobs:
       - name: Print the CloudFormation Linter Version & Run Linter
         run: |
           cfn-lint --version
-          cfn-lint -t cloudformation-template.yaml
+          cfn-lint -tcloudformation-template.yaml
 
   provision:
     runs-on: ubuntu-latest # GitHub-hosted runner
