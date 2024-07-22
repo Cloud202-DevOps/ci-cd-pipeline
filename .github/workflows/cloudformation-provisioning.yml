@@ -13,6 +13,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        
+      - name: Linter install
+        uses: scottbrenner/cfn-lint-action@v2
+        with:
+          command: cfn-lint -t./cloudformation-template.yaml
 
       - name: Set up AWS CLI
         run: |
@@ -31,6 +36,5 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file clouformation-template.yaml \
-            --stack-name gaststack \
+            --stack-name gactionststack \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
-
