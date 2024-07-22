@@ -17,16 +17,3 @@ Resources:
     Type: 'AWS::IAM::User'
     Properties:
       UserName: my-new-user
-      Tags:
-        - Key: Name
-          Value: my-iam-user
-
-Outputs:
-  EC2InstancePublicIP:
-    Description: "Public IP address of the EC2 instance"
-    Value: !GetAtt 
-      - MyEC2Instance
-      - PublicIp
-  IAMUserARN:
-    Description: "ARN of the IAM user"
-    Value: !Ref MyIAMUser
