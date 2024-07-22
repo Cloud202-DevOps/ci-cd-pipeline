@@ -7,17 +7,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  provision:
-    runs-on: ubuntu-latest # GitHub-hosted runner
+  lint:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
         
-      - name: Linter install
+      - name: Setup CloudFormation Linter with Latest Version
         uses: scottbrenner/cfn-lint-action@v2
-        with:
-          command: cfn-lint -t./cloudformation-template.yaml
+
+      - name: Print the CloudFormation Linter Version & Run Linter
+        run: |
+          cfn-lint --version
+          cfn-lint -t ./cloudformation-template.yaml
+
+  provision:
+    runs-on: ubuntu-latest # GitHub-hosted runner
+    needs: lint
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Set up AWS CLI
         run: |
@@ -27,7 +38,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set default.region eu-west-2
+          aws configure set default.region ${{ secrets.AWS_REGION }}
 
       - name: List Files
         run: ls -la
@@ -35,6 +46,6 @@ jobs:
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
-            --template-file clouformation-template.yaml \
+            --template-file ./cloudformation-template.yaml \
             --stack-name gactionststack \
             --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
